@@ -39,5 +39,8 @@
     <% else %>
       <%= link_to "フォローする", user_relationships_path(user.id), method: :post, class:"btn btn-success" %>
     <% end %>
+    <% if current_user.mutual_follows?(user) %>
+      <div class="mt-2 ml-2"><%= link_to 'chatを始める', chat_path(@user.id)%></div>
+    <% end %>
   </div>
 <% end %>
