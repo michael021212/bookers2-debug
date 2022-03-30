@@ -1,0 +1,26 @@
+<div class="pr-5 pl-5">
+  <h2><%= @user.name %> さんとのチャット</h2>
+
+  <table>
+      <thead>
+          <tr>
+            <td class="row flex-space-between pr-3 pl-3">
+              <div>自分の投稿</div>
+              <div>相手の投稿</div>
+            </td>
+          </tr>
+      </thead>
+      <tbody>
+          <% @chats.each do |chat| %>
+              <tr class=<%= chat.user == current_user ? "flex" : "flex-reverse" %>>
+                  <td class="chat_message"><%= safe_join(chat.message.split("\n"),tag(:br)) %></td>
+              </tr>
+          <% end %>
+      </tbody>
+  </table>
+  <%= form_with model: @chat do |f| %>
+      <%= f.text_area :message, rows:'5', class: "w-50 form-control" %>
+      <%= f.hidden_field :room_id %>
+      <%= f.submit "送信" %>
+  <% end %>
+</div>
