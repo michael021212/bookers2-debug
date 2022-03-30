@@ -1,9 +1,14 @@
+<%= link_to "新しい順", books_path(sort: "created_at desc") %>
+|
+<%= link_to "評価の高い順", books_path(sort: "rate desc") %>
+
 <table class='table table-hover table-inverse'>
   <thead>
     <tr>
       <th></th>
       <th>Title</th>
       <th>Opinion</th>
+      <th>Category</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -16,12 +21,32 @@
         </td>
         <td><%= link_to book.title,book, class: "book_#{book.id}" %></td>
         <td><%= book.body %></td>
+        <td>
+          <%= link_to search_path(model: "category", method: "perfect", content: "#{book.category}") do %>
+            <%= book.category %>
+          <% end %>
+        </td>
         <td id="favorite_btn_<%= book.id %>">
           <%= render 'favorites/favorite_btn', book: book %>
         </td>
         <td>コメント数: <%= book.book_comments.count %></td>
         <td>閲覧数: <%= book.impressionist_count %></td>
+        <td><div class="display_rate" data-score="<%= book.rate %>"></div></td>
       </tr>
     <% end %>
   </tbody>
 </table>
+
+<script>
+  $('.display_rate').raty({
+    readOnly: true,
+    score: function() {
+    return $(this).attr('data-score');
+    },
+    starOff:  '<%= asset_path('star-off.png') %>',
+    starOn : '<%= asset_path('star-on.png') %>',
+    starHalf: '<%= asset_path('star-half.png') %>',
+    scoreName: 'book[rate]',
+    half: true,
+  });
+</script>

@@ -12,7 +12,8 @@ class BooksController < ApplicationController
 
   def index
     @book = Book.new
-    @books = Book.includes(:favorited_users).sort {|a,b| b.favorites_for_one_week.count <=> a.favorites_for_one_week.count}
+    # @books = Book.includes(:favorited_users).sort {|a,b| b.favorites_for_one_week.count <=> a.favorites_for_one_week.count}
+    @books = Book.all.order(params[:sort])
   end
 
   def create
@@ -48,7 +49,7 @@ class BooksController < ApplicationController
   private
 
   def book_params
-    params.require(:book).permit(:title, :body)
+    params.require(:book).permit(:title, :body, :category, :rate)
   end
 
   def ensure_correct_user
