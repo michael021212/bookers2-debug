@@ -31,6 +31,17 @@ class SearchesController < ApplicationController
       when 'partial'
         Book.where('title LIKE ?', "%#{content}%")
       end
+    elsif model == 'category'
+      case method
+      when 'perfect'
+        Book.where(category: content)
+      when 'forward'
+        Book.where('category LIKE ?', "#{content}%")
+      when 'backward'
+        Book.where('category LIKE ?', "%#{content}")
+      when 'partial'
+        Book.where('category LIKE ?', "%#{content}%")
+      end
     end
   end
 end
