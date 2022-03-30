@@ -42,4 +42,8 @@ class User < ApplicationRecord
   def mutual_follows?(user)
     following?(user) && followed?(user)
   end
+
+  def create_books_day_ago(n)
+    books.where(created_at: n.day.ago.all_day)
+  end
 end
