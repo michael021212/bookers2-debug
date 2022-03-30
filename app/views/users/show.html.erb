@@ -7,8 +7,118 @@
       <%= render 'books/form', book: @book %>
     </div>
     <div class='col-md-8 offset-md-1'>
-      <h2>Books</h2>
-      <%= render 'books/index',books: @books %>
+      <div class="user_show_books">
+        <h2>Books</h2>
+        <%= render 'books/index',books: @books %>
+      </div>
+      <div class="user_show_book_counts">
+        <table class="table table-bordered">
+          <tr>
+            <th>今日の投稿数</th>
+            <th>前日の投稿数</th>
+            <th>前日比</th>
+          </tr>
+          <tr>
+            <td><%= @today_book.count %></td>
+            <td><%= @yesterday_book.count %></td>
+            <td>
+              <% if @yesterday_book.count != 0 %>
+                <% @the_day_before = @today_book.count / @yesterday_book.count.to_f %>
+                <%= (@the_day_before * 100).round %>%
+              <% end %>
+            </td>
+          </tr>
+        </table>
+        <table class="table table-bordered">
+          <tr>
+            <th>今週の投稿数</th>
+            <th>前週の投稿数</th>
+            <th>前週比</th>
+          </tr>
+          <tr>
+            <td><%= @this_week_book.count %></td>
+            <td><%= @last_week_book.count %></td>
+            <td>
+              <% if @last_week_book.count != 0 %>
+                <% @the_week_before = @this_week_book.count / @last_week_book.count.to_f %>
+                <%= (@the_week_before * 100).round %>%
+              <% end %>
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="user_show_book_counts_for_one_week">
+        <h3>７日間分の投稿数</h3>
+        <table class="table table-bordered">
+          <tr>
+            <th><%= day_ago(6) %></th>
+            <th><%= day_ago(5) %></th>
+            <th><%= day_ago(4) %></th>
+            <th><%= day_ago(3) %></th>
+            <th><%= day_ago(2) %></th>
+            <th><%= day_ago(1) %></th>
+            <th><%= day_ago(0) %></th>
+          </tr>
+          <tr>
+            <td><%= @user.create_books_day_ago(6).count %></td>
+            <td><%= @user.create_books_day_ago(5).count %></td>
+            <td><%= @user.create_books_day_ago(4).count %></td>
+            <td><%= @user.create_books_day_ago(3).count %></td>
+            <td><%= @user.create_books_day_ago(2).count %></td>
+            <td><%= @user.create_books_day_ago(1).count %></td>
+            <td><%= @user.create_books_day_ago(0).count %></td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="user_show_search_books_count">
+        <%= form_with url: user_search_path(@user), method: :get, local: false do |f| %>
+          <%= f.date_field :created_at %>
+          <%= f.submit '検索', class: 'btn btn-primary'  %>
+        <% end %>
+
+        <div id="search_result">
+          <% if @search_books.present? %>
+            <%= render 'search', search_books: @search_books %>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="user_show_chart">
+        <canvas id="myChart" width="200" height="100"> </canvas>
+      </div>
+      <script>
+          var ctx = document.getElementById("myChart").getContext('2d');
+          var myChart = new Chart(ctx, {
+              type: 'bar',
+              data: {
+                  labels: <%= @chartlabels %>,
+                  datasets: [{
+                      label: "投稿した本の数",
+                      data: <%= @chartdatas %>,
+                      backgroundColor: 'rgba(255, 80, 120, 0.2)',
+                      borderColor: 'rgba(255, 80, 120, 1.0)',
+                      lineTension: 0.3,
+                      type: 'line'
+                  }]
+              },
+              options: {
+                scales: {
+                    y: {
+                      display: true,
+                      suggestedMin: 0,
+                      suggestedMax: 10,
+                      beginAtZero: true,
+                      ticks: {
+                        stepSize: 1,
+                      }
+                    }
+                }
+              }
+          });
+      </script>
+
     </div>
   </div>
 </div>

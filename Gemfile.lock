@@ -76,6 +76,8 @@ GEM
       rack-test (>= 0.6.3)
       regexp_parser (>= 1.5, < 3.0)
       xpath (~> 3.2)
+    chart-js-rails (0.1.7)
+      railties (> 3.1)
     concurrent-ruby (1.1.9)
     crass (1.0.6)
     devise (4.8.0)
@@ -98,8 +100,18 @@ GEM
       activesupport (>= 4.2.0)
     i18n (1.8.10)
       concurrent-ruby (~> 1.0)
+    impressionist (2.0.0)
+      nokogiri (~> 1)
     jbuilder (2.11.2)
       activesupport (>= 5.0.0)
+    launchy (2.5.0)
+      addressable (~> 2.7)
+    letter_opener (1.8.1)
+      launchy (>= 2.2, < 3)
+    letter_opener_web (1.4.1)
+      actionmailer (>= 3.2)
+      letter_opener (~> 1.0)
+      railties (>= 3.2)
     listen (3.6.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -234,10 +246,13 @@ DEPENDENCIES
   bootsnap (>= 1.4.4)
   byebug
   capybara (>= 2.15)
+  chart-js-rails
   devise
   factory_bot_rails
   faker
+  impressionist
   jbuilder (~> 2.7)
+  letter_opener_web
   listen (~> 3.3)
   puma (~> 5.0)
   rack-mini-profiler (~> 2.0)

@@ -17,12 +17,44 @@
           </td>
           <td><%= link_to @book.title, @book %></td>
           <td><%= @book.body %></td>
+          <td><%= @book.category %></td>
+          <td id="favorite_btn_<%= @book.id %>">
+            <%= render 'favorites/favorite_btn', book: @book %>
+          </td>
+          <td>コメント数: <%= @book.book_comments.count %></td>
+          <td>閲覧数: <%= @book.impressionist_count %></td>
+          <td><div class="display_rate" data-score="<%= @book.rate %>"></div></td>
           <% if @book.user == current_user %>
             <td><%= link_to 'Edit', edit_book_path(@book), class: "btn btn-sm btn-success edit_book_#{@book.id}" %></td>
             <td><%= link_to 'Destroy', @book, method: :delete, data: { confirm: '本当に消しますか？' }, class: "btn btn-sm btn-danger destroy_book_#{@book.id}"%></td>
           <% end %>
         </tr>
       </table>
+      <div class="book_comment_list">
+        <%= render 'book_comments/book_comment_list', book: @book %>
+      </div>
+      <%= form_with model: [@book, @book_comment], local: false do |f| %>
+        <div class="row">
+          <div class="col-sm-12">
+            <%= f.text_area :comment, rows:'5', class: "form-control" %>
+          </div>
+        </div>
+        <%= f.submit "送信", class: "btn btn-secondary mt-2" %>
+      <% end %>
     </div>
   </div>
 </div>
+
+<script>
+  $('.display_rate').raty({
+    readOnly: true,
+    score: function() {
+    return $(this).attr('data-score');
+    },
+    starOff:  '<%= asset_path('star-off.png') %>',
+    starOn : '<%= asset_path('star-on.png') %>',
+    starHalf: '<%= asset_path('star-half.png') %>',
+    scoreName: 'book[rate]',
+    half: true,
+  });
+</script>

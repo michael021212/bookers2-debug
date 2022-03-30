@@ -1,13 +1,19 @@
 class BooksController < ApplicationController
+  impressionist :actions => [:show]
+
   before_action :ensure_correct_user, only: [:edit, :update]
 
   def show
     @book = Book.find(params[:id])
+    impressionist(@book, nil, unique: [:session_hash])
+    @favorite = Favorite.new
+    @book_comment = BookComment.new
   end
 
   def index
     @book = Book.new
-    @books = Book.all
+    # @books = Book.includes(:favorited_users).sort {|a,b| b.favorites_for_one_week.count <=> a.favorites_for_one_week.count}
+    @books = Book.all.order(params[:sort])
   end
 
   def create
@@ -43,7 +49,7 @@ class BooksController < ApplicationController
   private
 
   def book_params
-    params.require(:book).permit(:title, :body)
+    params.require(:book).permit(:title, :body, :category, :rate)
   end
 
   def ensure_correct_user

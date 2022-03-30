@@ -6,6 +6,12 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @books = @user.books
     @book = Book.new
+    @today_book =  @books.created_today
+    @yesterday_book = @books.created_yesterday
+    @this_week_book = @books.created_this_week
+    @last_week_book = @books.created_last_week
+    set_chartlabels
+    set_chartdatas
   end
 
   def index
@@ -25,6 +31,17 @@ class UsersController < ApplicationController
     end
   end
 
+  def search
+    @user = User.find(params[:user_id])
+    @books = @user.books
+    if params[:created_at].blank?
+      @search_books = "日付を選択してください"
+    else
+      create_at = params[:created_at]
+      @search_books = @books.where(['created_at LIKE ? ', "#{create_at}%"])
+    end
+  end
+
   private
 
   def user_params
@@ -36,5 +53,21 @@ class UsersController < ApplicationController
     unless @user == current_user
       redirect_to user_path(current_user)
     end
+  end
+
+  def set_chartlabels
+    @chartlabels = []
+    for n in 0..6 do
+      @chartlabels << view_context.day_ago(n)
+    end
+    @chartlabels = @chartlabels.reverse.to_json.html_safe
+  end
+
+  def set_chartdatas
+    @chartdatas = []
+    for n in 0..6 do
+      @chartdatas << @user.create_books_day_ago(n).count
+    end
+    @chartdatas = @chartdatas.reverse
   end
 end

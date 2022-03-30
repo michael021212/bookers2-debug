@@ -1,0 +1,23 @@
+.flex {
+  display: flex;
+  flex-direction: row;
+  padding-right: 5rem;
+}
+
+.flex-reverse {
+  display: flex;
+  flex-direction: row-reverse;
+  padding-left: 5rem;
+}
+
+.flex-space-between {
+  display: flex;
+  justify-content: space-between;
+}
+
+.chat_message {
+  border-radius: 5px;
+  background-color: lightgreen;
+  padding: 0.3rem;
+  margin: 0.3rem;
+}
