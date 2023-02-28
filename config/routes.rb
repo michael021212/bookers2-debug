@@ -4,6 +4,9 @@ Rails.application.routes.draw do
     mount LetterOpenerWeb::Engine, at: "/letter_opener"
   end
 
+  mount API::Root => '/api'
+  mount GrapeSwaggerRails::Engine => '/docs' if defined? GrapeSwaggerRails
+
   root :to =>"homes#top"
   get "home/about"=>"homes#about"
   get '/search', to: 'searches#search'
