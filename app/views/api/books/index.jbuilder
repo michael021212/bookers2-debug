@@ -1,5 +1,5 @@
 json.books do
   json.array!(@books) do |book|
-    json.(book, :id, :title, :created_at)
+    json.(book, :id, :title, :created_at, :updated_at)
   end
 end
