@@ -6,7 +6,7 @@
 3. rails db:migrate
 4. rails s
 
-### activeadminで管理画面を作る場合
+## activeadminで管理画面を作る場合
 1. gem 'activeadmin'
 2. bundle
 3. rails g active_admin:install #devise入っている前提
