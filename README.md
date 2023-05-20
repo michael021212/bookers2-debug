@@ -7,6 +7,7 @@
 4. rails s
 
 ## activeadminで管理画面を作る場合
+https://activeadmin.info/0-installation.html#setting-up-active-admin
 1. gem 'activeadmin'
 2. bundle
 3. rails g active_admin:install #devise入っている前提
